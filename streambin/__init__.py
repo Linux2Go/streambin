@@ -18,6 +18,7 @@ import requests
 import argparse
 import sys
 import time
+import select
 
 def create_new(args):
     resp = requests.post(args.url + '/new')
@@ -50,20 +51,25 @@ def main(argv=sys.argv[1:]):
 
     last_post = 0
     buf = ''
+
     while True:
         while True:
             now = time.time()
 
-            l = fp.readline()
-            buf += l
+            if fp in select.select([fp], [], [], 1)[0]:
+                l = fp.readline()
+                buf += l
 
             if l == '' or (now - last_post) > 1:
                 break
 
-        if buf == '':
-            break
+        if buf:
+            requests.post(write_url, buf)
 
-        requests.post(write_url, buf)
+        if l == '':
+            # fp.readline() only returns an empty line
+            # on EOF
+            break
 
         buf = ''
         last_post = now
