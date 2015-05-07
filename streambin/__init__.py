@@ -51,6 +51,7 @@ def main(argv=sys.argv[1:]):
 
     last_post = 0
     buf = ''
+    l = None
 
     while True:
         while True:
