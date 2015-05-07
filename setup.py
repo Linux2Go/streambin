@@ -22,7 +22,7 @@ setup(
     author='Soren Hansen',
     author_email='soren@linux2go.dk',
     url='http://streambin.net/',
-    version='0.2',
+    version='0.3',
     packages=['streambin'],
     zip_safe=True,
     install_requires=['requests'],
